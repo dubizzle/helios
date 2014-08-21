@@ -2,7 +2,7 @@ Helios
 ======
 
 [![Build Status](https://travis-ci.org/spotify/helios.svg?branch=master)](https://travis-ci.org/spotify/helios)
-[![Latest Release](http://img.shields.io/github/release/spotify/helios.svg)]
+[![Latest Release](https://img.shields.io/github/release/spotify/helios.svg)]
 
 Helios is a Docker orchestration platform for deploying and managing
 containers across an entire fleet.
