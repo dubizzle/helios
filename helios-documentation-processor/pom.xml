@@ -6,17 +6,24 @@
     <version>0.8.3-SNAPSHOT</version>
   </parent>
 
-  <name>Helios Client</name>
-  <artifactId>helios-client</artifactId>
+  <name>Helios Documentation Processor</name>
+  <artifactId>helios-documentation-processor</artifactId>
   <packaging>jar</packaging>
-
-  <properties>
-    <version.template.file>src/main/java/com/spotify/helios/common/Version.java.template</version.template.file>
-    <version.file>src/main/java/com/spotify/helios/common/Version.java</version.file>
-  </properties>
 
   <dependencies>
     <!--compile deps-->
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>1.0-rc1</version>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -42,11 +49,7 @@
       <artifactId>dnsjava</artifactId>
       <version>2.1.6</version>
     </dependency>
-    <dependency>
-      <groupId>com.spotify</groupId>
-      <artifactId>helios-documentation-processor</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+
     <!-- test deps -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -71,29 +74,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.google.code.maven-replacer-plugin</groupId>
-        <artifactId>maven-replacer-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-          <execution>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>replace</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <file>${version.template.file}</file>
-          <outputFile>${version.file}</outputFile>
-          <replacements>
-            <replacement>
-              <token>@pomversion@</token>
-              <value>${project.version}</value>
-            </replacement>
-          </replacements>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>

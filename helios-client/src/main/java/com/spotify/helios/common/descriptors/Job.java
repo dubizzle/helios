@@ -46,6 +46,9 @@ import static com.spotify.helios.common.Hash.sha1digest;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
+/**
+ * An object representing the job configuration.
+ */
 public class Job extends Descriptor implements Comparable<Job> {
 
   public static final Map<String, String> EMPTY_ENV = emptyMap();

@@ -36,9 +36,15 @@ import javax.ws.rs.QueryParam;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
-@Path("version")
+/**
+ * Version related resources.
+ */
+@Path("/version")
 public class VersionResource {
 
+  /**
+   * @return the current server version.
+   */
   @GET
   @Produces(TEXT_PLAIN)
   @Timed
@@ -48,6 +54,13 @@ public class VersionResource {
     return String.format("\"%s\"", Version.POM_VERSION);
   }
 
+  /**
+   * Given the client version, returns a status as to the compatibility between the client
+   * and server.
+   *
+   * @param client The client version
+   * @return the compatibility status
+   */
   @GET
   @Path("/check")
   @Produces(APPLICATION_JSON)
