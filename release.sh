@@ -15,5 +15,7 @@ fi
 # Use the maven release plugin to update the pom versions and tag the release commit
 mvn -B release:prepare release:clean $RELEASE_ARGS
 
-echo "Created release tag" `git describe --abbrev=0 rculbertson/helios-go`
+VERSION=`git describe --abbrev=0 rculbertson/helios-go`
+echo $VERSION > target/version
+echo "Created release tag" $VERSION
 echo "Remember to: ./push-release.sh"
