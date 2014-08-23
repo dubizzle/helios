@@ -7,7 +7,7 @@
   <url>https://github.com/spotify/helios</url>
   <groupId>com.spotify</groupId>
   <artifactId>helios-parent</artifactId>
-  <version>0.8.3-SNAPSHOT</version>
+  <version>0.5.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <parent>
