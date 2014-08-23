@@ -1,3 +1,3 @@
 #!/bin/bash -e
-release.sh
-push-release.sh
+./release.sh
+./push-release.sh
