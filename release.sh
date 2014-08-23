@@ -13,7 +13,7 @@ then
 fi
 
 # Use the maven release plugin to update the pom versions and tag the release commit
-mvn -B release:prepare release:clean $RELEASE_ARGS
+mvn -Darguments="-DskipTests" -B release:prepare release:clean $RELEASE_ARGS
 
 VERSION=`git describe --abbrev=0 rculbertson/helios-go`
 echo $VERSION > target/version
