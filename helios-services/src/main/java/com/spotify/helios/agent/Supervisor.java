@@ -28,6 +28,7 @@ import com.spotify.docker.client.DockerException;
 import com.spotify.docker.client.messages.ContainerInfo;
 import com.spotify.helios.common.descriptors.Goal;
 import com.spotify.helios.common.descriptors.Job;
+import com.spotify.helios.serviceregistration.ServiceRegistrar;
 import com.spotify.helios.servicescommon.DefaultReactor;
 import com.spotify.helios.servicescommon.Reactor;
 import com.spotify.helios.servicescommon.statistics.SupervisorMetrics;
@@ -36,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InterruptedIOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
@@ -63,6 +65,7 @@ public class Supervisor {
   private final TaskRunnerFactory runnerFactory;
   private final StatusUpdater statusUpdater;
   private final TaskMonitor monitor;
+  private final ServiceRegistrar registrar;
 
   private volatile Goal goal;
   private volatile String containerId;
@@ -81,6 +84,7 @@ public class Supervisor {
     this.runnerFactory = checkNotNull(builder.runnerFactory, "runnerFactory");
     this.statusUpdater = checkNotNull(builder.statusUpdater, "statusUpdater");
     this.monitor = checkNotNull(builder.monitor, "monitor");
+    this.registrar = checkNotNull(builder.registrar);
     this.reactor = new DefaultReactor("supervisor-" + job.getId(), new Update(),
                                       SECONDS.toMillis(30));
     this.reactor.startAsync();
@@ -206,6 +210,7 @@ public class Supervisor {
     private TaskRunnerFactory runnerFactory;
     private StatusUpdater statusUpdater;
     private TaskMonitor monitor;
+    private ServiceRegistrar registrar;
 
 
     public Builder setJob(final Job job) {
@@ -250,6 +255,11 @@ public class Supervisor {
 
     public Builder setMonitor(final TaskMonitor monitor) {
       this.monitor = monitor;
+      return this;
+    }
+
+    public Builder setRegistrar(final ServiceRegistrar registrar) {
+      this.registrar = registrar;
       return this;
     }
 
@@ -334,6 +344,16 @@ public class Supervisor {
     public void perform(final boolean done) throws InterruptedException {
       if (done) {
         return;
+      }
+
+      final Integer gracePeriod = job.getGracePeriod();
+      if (gracePeriod != null && gracePeriod > 0) {
+        log.info("Unregistering from service discovery for {} seconds before stopping",
+                 gracePeriod);
+
+        if (runner.unregister()) {
+          Thread.sleep(TimeUnit.MILLISECONDS.convert(gracePeriod, TimeUnit.SECONDS));
+        }
       }
 
       log.debug("stopping job: {}", job);

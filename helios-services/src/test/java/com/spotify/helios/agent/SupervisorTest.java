@@ -178,6 +178,7 @@ public class SupervisorTest {
         .setRunnerFactory(runnerFactory)
         .setMetrics(new NoopSupervisorMetrics())
         .setMonitor(monitor)
+        .setRegistrar(registrar)
         .build();
 
     final ConcurrentMap<JobId, TaskStatus> statusMap = Maps.newConcurrentMap();
