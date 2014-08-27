@@ -356,7 +356,7 @@ public class JobCreateCommand extends ControlCommand {
         out.println("Done.");
       }
       if (json) {
-        out.println("\"" + job.getId() + "\"");
+        out.println(status.toJsonString());
       } else {
         out.println(job.getId());
       }
